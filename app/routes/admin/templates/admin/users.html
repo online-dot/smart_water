@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Users</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        form { margin-top: 5px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <h1>All Registered Users</h1>
+    <a href="/admin">⬅ Back to Dashboard</a>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Account Type</th>
+            <th>Balance (KES)</th>
+            <th>Serial</th>
+            <th>Status</th>
+            <th>Location</th>
+            <th>Actions</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.email or '-' }}</td>
+            <td>{{ user.account_type }}</td>
+            <td>{{ "%.2f" | format(user.balance) }}</td>
+            <td>{{ user.meter.serial_number if user.meter else '-' }}</td>
+            <td>{{ user.meter.status if user.meter else '-' }}</td>
+            <td>{{ user.meter.location if user.meter else '-' }}</td>
+            <td>
+                <!-- Recharge Form -->
+                <form method="POST" action="/admin/recharge_balance">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <input type="number" name="amount" placeholder="KES Amount" min="1" required>
+                    <button type="submit">Recharge</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

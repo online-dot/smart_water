@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><title>Inactive Meters</title></head>
+<body>
+    <h1>Inactive Meters</h1>
+    <a href="/admin">Back to Dashboard</a>
+    <table border="1">
+        <tr>
+            <th>Serial Number</th><th>Location</th><th>Assigned User</th>
+        </tr>
+        {% for meter in meters %}
+        <tr>
+            <td>{{ meter.serial_number }}</td>
+            <td>{{ meter.location }}</td>
+            <td>{{ meter.user.full_name if meter.user else 'Unassigned' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

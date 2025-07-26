@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Meters</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        form { display: inline-block; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>All Meters</h1>
+    <a href="/admin">⬅ Back to Dashboard</a>
+
+    <table>
+        <tr>
+            <th>Serial Number</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Assigned User</th>
+            <th>Actions</th>
+        </tr>
+        {% for meter in meters %}
+        <tr>
+            <td>{{ meter.serial_number }}</td>
+            <td>{{ meter.location }}</td>
+            <td>{{ meter.status }}</td>
+            <td>{{ meter.user.full_name if meter.user else 'Unassigned' }}</td>
+            <td>
+                <!-- Status Toggle Form -->
+                <form method="POST" action="/admin/update_status">
+                    <input type="hidden" name="meter_id" value="{{ meter.id }}">
+                    <select name="status">
+                        <option value="active" {% if meter.status == 'active' %}selected{% endif %}>Activate</option>
+                        <option value="inactive" {% if meter.status == 'inactive' %}selected{% endif %}>Deactivate</option>
+                    </select>
+                    <button type="submit">Change</button>
+                </form>
+
+                <!-- Valve Control Form -->
+                <form method="POST" action="/admin/toggle_valve">
+                    <input type="hidden" name="meter_id" value="{{ meter.id }}">
+                    <button type="submit" name="action" value="open">Open</button>
+                    <button type="submit" name="action" value="close">Close</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

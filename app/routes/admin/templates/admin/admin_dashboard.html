@@ -1,0 +1,113 @@
+<!-- templates/admin/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-link {
+            color: inherit;
+            text-decoration: none;
+        }
+        .card-link:hover {
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="mb-4">Smart Water Admin Dashboard</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <a href="/admin/total_users" class="card-link">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Total Users</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ total_users }}</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/admin/total_payments" class="card-link">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Total Balance</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ total_balance }} KES</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/admin/leak_reports" class="card-link">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-header">Leak Reports</div>
+                    <div class="card-body">
+                        <h4 class="card-title">View Logs</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <h3><a href="/admin/low_balance_users">Users With Low Balance (&lt; 20 KES)</a></h3>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in low_balance_users %}
+            <tr>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.balance }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3">✅ All users have sufficient balance</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3><a href="/admin/inactive_meters">Inactive Meters</a></h3>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Serial Number</th>
+                <th>Location</th>
+                <th>Assigned User</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for meter in inactive_meters %}
+            <tr>
+                <td>{{ meter.serial_number }}</td>
+                <td>{{ meter.location }}</td>
+                <td>{{ meter.user.full_name if meter.user else "Unassigned" }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3">✅ All meters are active</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 class="mt-5">🔗 Quick Links</h3>
+    <ul>
+        <li><a href="/admin/users">View All Users</a></li>
+        <li><a href="/admin/meters">View All Meters</a></li>
+        <li><a href="/admin/low_balance_users">Low Balance Users</a></li>
+        <li><a href="/admin/inactive_meters">Inactive Meters</a></li>
+        <li><a href="/admin/leak_reports">Leak Detection Logs</a></li>
+        <li><a href="/admin/total_users">Total Users Count</a></li>
+        <li><a href="/admin/total_payments">Total Payments Summary</a></li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+python -m venv venv
+venv\Scripts\activate
+
+
+
+
+
+
+
+flask --app run.py db init
+flask --app run.py db migrate -m "Initial migration"
+flask --app run.py db upgrade
+
+
+
+add new table in database then update 
+flask db migrate -m "Add UsageLog for leak detection"
+flask db upgrade
+
+
+add ths table 
+
+ leak_detected = db.Column(db.Boolean, default=False)  # Flag set by backend or ESP32

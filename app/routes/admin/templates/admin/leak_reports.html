@@ -1,0 +1,36 @@
+<!-- templates/admin/leak_reports.html -->
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">🚨 Leak Reports</h2>
+    {% if logs %}
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Timestamp</th>
+                <th>Meter Serial</th>
+                <th>Flow Rate (L/min)</th>
+                <th>Leak Detected?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ log.meter.serial_number if log.meter else log.meter_id }}</td>
+                <td>{{ log.flow_rate }}</td>
+                <td class="{{ 'text-danger' if log.leak_detected else 'text-success' }}">
+                    {{ 'Yes' if log.leak_detected else 'No' }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info">
+        ✅ No leaks have been detected.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

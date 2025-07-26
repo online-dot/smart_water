@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>Low Balance Users</title></head>
+<body>
+    <h1>Users with Balance Below 20 KES</h1>
+    <a href="/admin">Back to Dashboard</a>
+    <table border="1">
+        <tr>
+            <th>Name</th><th>Phone</th><th>Balance</th><th>Meter Serial</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.balance }}</td>
+            <td>{{ user.meter.serial_number }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
